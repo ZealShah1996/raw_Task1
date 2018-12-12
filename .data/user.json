@@ -1,12 +1,1 @@
-{
-    "1": {
-        "id": 1,
-        "name": "zeal shah",
-        "age": 23
-    },
-    "2": {
-        "id": 2,
-        "name": "test shah",
-        "age": 24
-    }
-}
+{"user":[{"id":1,"name":"zeal hhhh","age":23},{"id":11,"name":"zea","age":23}],"zeal":[{"id":1,"name":"zeal hhhh","age":23},{"id":11,"name":"zeal fbnvbnvbnvbn","age":23}]}
