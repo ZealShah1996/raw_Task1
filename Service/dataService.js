@@ -33,18 +33,22 @@ exports.addUpdateData = async (req,res) => {
             //checking based on key is there any data avaiable or not.
             if (!readData.exists ) {
                 if(req.url.split('/').indexOf('add')==-1){
-                    throw new Error("wrong request.");
+                    let error= new Error("wrong request.");
+                    error["statusCode"]=422;
+                    throw error;
                 }
                 //no then add it in db file.
                 let datatoPassedBack=await utilityService.appendData(filePath, primaryKey, readData.DataWhichRead,data,{"Update":false},modelName);
-                return {"data":datatoPassedBack};
+                return {"data":datatoPassedBack,"statuscode":201};
             } else{
                 if(req.url.split('/').indexOf('update')==-1){
-                    throw new Error("wrong request.");
+                    let error= new Error("wrong request.");
+                    error["statusCode"]=422;
+                    throw error;
                 }
                 //yes then go for update.
                 let datatoPassedBack=await utilityService.appendData(filePath, primaryKey,readData.DataWhichRead,data,{"Update":true},modelName);
-                return {"data":datatoPassedBack};
+                return {"data":datatoPassedBack,"statuscode":200};
             }
         }
         else {
@@ -53,7 +57,7 @@ exports.addUpdateData = async (req,res) => {
         }
     }
     catch (err) {
-        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+        return {"error":`Data Add/Update in db is not processed. message:-${err.message} StackTrace:-${err.stack}`,"statuscode":err.statusCode!=null?err.statusCode:400};
        // throw new Error();
     }
 }
@@ -83,7 +87,7 @@ exports.GetAll = async (req,res) => {
         }
     }
     catch (err) {
-        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`,"statuscode":404};
        // throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }
@@ -115,7 +119,7 @@ exports.delete = async (req,res) => {
         }
     }
     catch (err) {
-        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`,"statuscode":404};
        // throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }

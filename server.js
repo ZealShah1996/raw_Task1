@@ -52,8 +52,7 @@ exports.serverRouting = async (req, res) => {
             req["url"]=req["url"].replace(`/${req["id"]}`,'');
             //set content type to request
             res.setHeader('Content-Type', 'application/json');
-            //write status code default 200.
-            res.writeHead(200);
+            
             console.log(req);
             //finding handler function where it will go next.
             var chosenHandler = typeof (req["url"]) !== 'undefined' ? handlers[req["url"]] : handlers.notFound;
@@ -61,6 +60,8 @@ exports.serverRouting = async (req, res) => {
             if (utilityService.checkNotNullAndNotUndefined(chosenHandler)) {
                 //executing handler.
                 let responseObject = await chosenHandler(req, res);
+                //write status code default 200.
+                res.writeHead(utilityService.checkNotNullAndNotUndefined(responseObject["statuscode"])?responseObject["statuscode"]:200);
                 //writing resposne in proper format for response return.
                 res.write(await replay(responseObject));
                 //ending response.
@@ -70,6 +71,7 @@ exports.serverRouting = async (req, res) => {
                 let responseObject = {};
                 //route dosen't found error.
                 responseObject["error"] = "No rotes found.";
+                res.writeHead(404);
                   //writing resposne in proper format for response return.
                 res.write(await replay(responseObject));
                  //ending response.

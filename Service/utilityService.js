@@ -261,9 +261,10 @@ exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAp
     }
     else {
         if(!utilityService.checkNotUndefined(alreadyAddedData[modelName])){
+              //data add
             alreadyAddedData[modelName]=[];
             alreadyAddedData[modelName].push(data);
-            //data;
+          
         }
         else{
         //performing create request.
@@ -477,14 +478,11 @@ exports.deleteFromArray=async (arrayOfObjects,ids)=>{
 
 exports.responseSendBack = async (object) => {
     let responseObjectString = {};
-    let listOfObjects = ["data", "statusCode", "error", "message"];
+    let listOfObjects = ["data", "error","message"];
     listOfObjects.forEach((element) => {
         let bool = utilityService.checkKeyEsixtsInObject(object, element);
         if (bool) {
             responseObjectString[element] = object[element];
-        }
-        else {
-            responseObjectString[element] = "";
         }
     });
     return JSON.stringify(responseObjectString);
