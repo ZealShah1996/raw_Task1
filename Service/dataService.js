@@ -68,7 +68,7 @@ exports.GetAll = async (req,res) => {
               //file path create dynamic using function.
         let filePath = await utilityService.createFilePath('', modelName, 'json');
         //getting all data from utiliservice's find all data .
-            let dataGetFromJson = await utilityService.findAllData(filePath, {},modelName);
+            let dataGetFromJson = await utilityService.findAllData(filePath,modelName);
             return dataGetFromJson;
         }
         else {

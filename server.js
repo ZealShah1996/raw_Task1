@@ -13,7 +13,7 @@ const keyExists = require('./Service/utilityService').checkKeyEsixtsInObject;
 
 //server start on specific port and url provided in function.
 //***(port,url,options?={}) */
-utilityService.serverStart(8000, undefined, {}).then(serverStart => {
+ utilityService.serverStart(8000, undefined, {}).then(serverStart => {
     //if server start is true means server is started..
     console.log(`serverStart ${serverStart}`);
 }).catch(Error => {
@@ -35,7 +35,7 @@ exports.serverRouting = async (req, res) => {
         //using to getting data passed in req 
         var decoder = new StringDecoder('utf-8');
         var perameters=req.url.toString();
-req["url"]=url.parse(req.url,true).href;
+        req["url"]=url.parse(req.url,true).href;
         var buffer = '';
         //if data passed event call then write in buffer with utf-8 encoding.
         req.on("data", (data) => {

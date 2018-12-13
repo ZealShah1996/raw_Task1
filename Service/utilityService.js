@@ -339,7 +339,7 @@ catch(err){
   * @param {*} modelName (model name means table name.)
   * @return {*} retrunObject. -return object which contains data to show from files.
   */
-exports.findAllData = async (filePath, condition,modelName) => {
+exports.findAllData = async (filePath, modelName,condition={}) => {
     let retrunObject = {};
     //reading file
     let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r' });
@@ -347,9 +347,9 @@ exports.findAllData = async (filePath, condition,modelName) => {
     //checking condition should not be emty object.
     if (condition != {}) {
         //parsing data which passed.
-         let temp=await utilityService.jsonParsing(data);
+         let temp=await utilityService.jsonParsing(data,[]);
          //assigning data in replay object.
-         retrunObject["data"] =temp[modelName];
+         retrunObject["data"] =utilityService.checkNotNullAndNotUndefined(temp[modelName])?temp[modelName]:'';
          //attaching condition.
          retrunObject["data"]["condition"] = condition;
          
