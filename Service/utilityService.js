@@ -332,13 +332,6 @@ catch(err){
 }
 }
 
-//**
- /* prevent error of not acceptable json.
- * @param {*} filePath (ex. string to be parsed)
- * @param {*} condition (ex. if json is not acceptable then what should return.)
- * @return {*} existData. -Parsed data.
- */
-
  //**
   /* find all data in main file.
   * @param {*} filePath (ex. string to be parsed)
@@ -372,6 +365,48 @@ exports.findAllData = async (filePath, condition,modelName) => {
     }
 }
 
+//**
+  /* @description ids passed needs to delete.
+  * @function deleteData(filePath,condition,modelName)
+  * @param {String} filePath (ex. string to be parsed)
+  * @param {Array} ids ()
+  * @param {String} modelName (model name means table name.)
+  * @return {Array} retrunObject. -return object which contains data to show from files.
+  */
+ exports.deleteData = async (filePath,ids,modelName) => {
+    let retrunObject = {};
+    //reading file
+    let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r' });
+
+    //checking condition should not be emty object.
+    if (ids.length!=0) {
+        //parsing data which passed.
+         let temp=await utilityService.jsonParsing(data);
+         temp[modelName]=await utilityService.deleteFromArray(temp[modelName],ids);
+         //assigning data in replay object.
+         retrunObject["data"] =temp[modelName];
+         
+        //after processing update/create request it will write changes to file.
+        let appendData = await utilityService.writeFile(filePath, JSON.stringify(temp), {});
+        return retrunObject;
+    }
+    //executing get all entries from file.
+    else {
+         //parsing data which passed.
+        let temp=await utilityService.jsonParsing(data);
+        //assigning data in replay object.
+        retrunObject["data"] =temp[modelName];
+        retrunObject["message"]="Nothing deleted."
+        return retrunObject;
+    }
+       
+}
+
+
+
+
+
+
 exports.filterArray = async (arrayOfObjects, ids) => {
     let returnListOfObjects = arrayOfObjects.filter((element) => {
         if (ids.indexOf(element.id) > -1) {
@@ -382,9 +417,18 @@ exports.filterArray = async (arrayOfObjects, ids) => {
 }
 
 
+exports.deleteFromArray=async (arrayOfObjects,ids)=>{
+    let returnListOfObjects = arrayOfObjects.filter((element) => {
+        if (ids.indexOf(element.id)==-1) {
+            return element;
+        }
+    });
+    return returnListOfObjects;
+}
+
+
 
 //#endregion
-
 
 //#region region for replaying data
 

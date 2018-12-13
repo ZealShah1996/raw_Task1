@@ -3,6 +3,7 @@
 
 const querystring = require('querystring');
 var StringDecoder = require('string_decoder').StringDecoder;
+const url=require('url');
 
 //importing same file for accessing utility functions for processing.
 const utilityService = require('./Service/utilityService');
@@ -33,6 +34,8 @@ exports.serverRouting = async (req, res) => {
     try {
         //using to getting data passed in req 
         var decoder = new StringDecoder('utf-8');
+        var perameters=req.url.toString();
+req["url"]=url.parse(req.url,true).href;
         var buffer = '';
         //if data passed event call then write in buffer with utf-8 encoding.
         req.on("data", (data) => {
@@ -45,6 +48,9 @@ exports.serverRouting = async (req, res) => {
             buffer += decoder.end();
             //assigning data attribute to request from buffer.
             req["data"] = buffer;
+
+            req["id"]=parseInt(perameters.slice(perameters.lastIndexOf('/')+1,perameters.lastIndexOf('?')!=-1?perameters.lastIndexOf('?'):perameters.length));
+            req["url"]=req["url"].replace(`/${req["id"]}`,'');
             //set content type to request
             res.setHeader('Content-Type', 'application/json');
             //write status code default 200.
@@ -90,4 +96,5 @@ let handlers = {};
 handlers['/user/getAll'] = dataService.GetAll;
 handlers["/user/update"] = dataService.addUpdateData;
 handlers["/user/add"] = dataService.addUpdateData;
+handlers["/user/delete"]=dataService.delete;
 

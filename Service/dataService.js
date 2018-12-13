@@ -79,3 +79,36 @@ exports.GetAll = async (req,res) => {
         throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }
+
+
+//**
+ /* delete data from database.
+ * @param {*} req :-req object of http module.
+ * @param {*} res:-res object of http module.
+ * @return {*} res :-response to request.
+ */
+exports.delete = async (req,res) => {
+    try {
+         //primary key assignmenet for temporay purpose we can change it and make it dynamic also.
+        let primaryKey="id";
+         //same as primary key.
+        let modelName="user";
+        
+        if (primaryKey != null) {
+              //file path create dynamic using function.
+        let filePath = await utilityService.createFilePath('', modelName, 'json');
+        //delete data based on array passed.
+            let dataGetFromJson = await utilityService.deleteData(filePath,[req.id],modelName);
+           
+            return dataGetFromJson;
+        }
+        else {
+            throw new Error(`Primary key Value Name is needed for adding data db.`);
+        }
+    }
+    catch (err) {
+        throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
+    }
+}
+
+
