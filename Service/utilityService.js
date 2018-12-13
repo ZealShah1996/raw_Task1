@@ -183,7 +183,7 @@ exports.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject = val => {
 exports.keyFind = async (filePath, fileOptions, keyToCheck, modelName) => {
     let returnObject = {};
     //parse json after reading data from file.
-    let data = await utilityService.jsonParsing(await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r' }));
+    let data = await utilityService.jsonParsing(await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
 
     //fileter specific key id fromlist of array using filterArray function.
     let existData = await utilityService.filterArray(data[modelName], [keyToCheck]);
@@ -208,7 +208,7 @@ exports.keyFind = async (filePath, fileOptions, keyToCheck, modelName) => {
  */
 exports.fileRead = async (filePath, fileReadOptions) => {
     //verify that file read options are acceptable.
-    fileReadOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileReadOptions) ? fileReadOptions : { encoding: 'utf-8', flag: 'w' };
+    fileReadOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileReadOptions) ? fileReadOptions : { encoding: 'utf-8', flag: 'w+' };
     return new Promise((resolve, reject) => {
         try {
             //promise for asyncronas process with filepath provided.
@@ -238,6 +238,7 @@ exports.fileRead = async (filePath, fileReadOptions) => {
  * @return {*} returnObject.
  */
 exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAppendOptions, modelName) => {
+    try{
     //verify taht file added options are acceptable.
     fileAppendOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileAppendOptions) ? fileAppendOptions : { encoding: 'utf-8', flag: 'r+' };
   
@@ -259,9 +260,16 @@ exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAp
         console.log(datatoreturn);
     }
     else {
+        if(!utilityService.checkNotUndefined(alreadyAddedData[modelName])){
+            alreadyAddedData[modelName]=[];
+            alreadyAddedData[modelName].push(data);
+            //data;
+        }
+        else{
         //performing create request.
         alreadyAddedData[modelName][alreadyAddedData[modelName].length] =
             data;
+        }
         
             returnObject = { "Create Performed": true, "addeddata": data, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
     }
@@ -272,6 +280,10 @@ exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAp
     console.log("DataUpdate is success full:" + true);
     //returning objects to call.
     return returnObject;
+}
+catch(err){
+    return [];
+}
 }
 
 //**
@@ -310,8 +322,34 @@ exports.writeFile = async (filePath, data, writeFileOptions) => {
  */
 exports.createFilePath = async (dir, filename, filetype) => {
     let deaultFolderPath = `${baseDir}${dir}${filename}.${filetype}`;
-    return deaultFolderPath;
+return new Promise((resolve,reject)=>{
+    checkForFile(deaultFolderPath,()=>{
+        return resolve(deaultFolderPath);
+       });
+})
+  
+    
 }
+
+//checks if the file exists. 
+//If it does, it just calls back.
+//If it doesn't, then the file is created.
+function checkForFile(fileName,callback)
+{
+    fs.exists(fileName, function (exists) {
+        if(exists)
+        {
+            callback();
+        }else
+        {
+            fs.writeFile(fileName, "",{flag: 'wx'}, function (err, data) 
+            { 
+                callback();
+            })
+        }
+    });
+}
+
 
 //**
  /* prevent error of not acceptable json.
@@ -342,7 +380,7 @@ catch(err){
 exports.findAllData = async (filePath, modelName,condition={}) => {
     let retrunObject = {};
     //reading file
-    let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r' });
+    let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r+' });
 
     //checking condition should not be emty object.
     if (condition != {}) {
@@ -376,7 +414,7 @@ exports.findAllData = async (filePath, modelName,condition={}) => {
  exports.deleteData = async (filePath,ids,modelName) => {
     let retrunObject = {};
     //reading file
-    let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r' });
+    let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r+' });
 
     //checking condition should not be emty object.
     if (ids.length!=0) {
@@ -404,10 +442,8 @@ exports.findAllData = async (filePath, modelName,condition={}) => {
 
 
 
-
-
-
 exports.filterArray = async (arrayOfObjects, ids) => {
+try{
     let returnListOfObjects = arrayOfObjects.filter((element) => {
         if (ids.indexOf(element.id) > -1) {
             return element;
@@ -415,9 +451,16 @@ exports.filterArray = async (arrayOfObjects, ids) => {
     });
     return returnListOfObjects;
 }
+catch(err){
+    return arrayOfObjects;
+}
+}
 
 
 exports.deleteFromArray=async (arrayOfObjects,ids)=>{
+    if(arrayOfObjects.length<1){
+        return [];
+    }
     let returnListOfObjects = arrayOfObjects.filter((element) => {
         if (ids.indexOf(element.id)==-1) {
             return element;

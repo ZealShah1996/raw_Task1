@@ -30,7 +30,6 @@ const keyExists = require('./Service/utilityService').checkKeyEsixtsInObject;
 * @param {*} res:response to client.
 */
 exports.serverRouting = async (req, res) => {
-
     try {
         //using to getting data passed in req 
         var decoder = new StringDecoder('utf-8');
@@ -77,6 +76,7 @@ exports.serverRouting = async (req, res) => {
                 res.end();
             }
         });
+    
     }
     catch (err) {
         //writing error in response.

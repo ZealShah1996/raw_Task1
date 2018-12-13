@@ -31,11 +31,17 @@ exports.addUpdateData = async (req,res) => {
             //read data from file and making key search out put.
             let readData = await utilityService.keyFind(filePath, {}, data[primaryKey],modelName);
             //checking based on key is there any data avaiable or not.
-            if (!readData.exists) {
+            if (!readData.exists ) {
+                if(req.url.split('/').indexOf('add')==-1){
+                    throw new Error("wrong request.");
+                }
                 //no then add it in db file.
                 let datatoPassedBack=await utilityService.appendData(filePath, primaryKey, readData.DataWhichRead,data,{"Update":false},modelName);
                 return {"data":datatoPassedBack};
-            } else {
+            } else{
+                if(req.url.split('/').indexOf('update')==-1){
+                    throw new Error("wrong request.");
+                }
                 //yes then go for update.
                 let datatoPassedBack=await utilityService.appendData(filePath, primaryKey,readData.DataWhichRead,data,{"Update":true},modelName);
                 return {"data":datatoPassedBack};
@@ -47,7 +53,8 @@ exports.addUpdateData = async (req,res) => {
         }
     }
     catch (err) {
-        throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+       // throw new Error();
     }
 }
 
@@ -76,7 +83,8 @@ exports.GetAll = async (req,res) => {
         }
     }
     catch (err) {
-        throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+       // throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }
 
@@ -107,7 +115,8 @@ exports.delete = async (req,res) => {
         }
     }
     catch (err) {
-        throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`};
+       // throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }
 
