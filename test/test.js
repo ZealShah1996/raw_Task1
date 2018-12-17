@@ -6,7 +6,7 @@ var fileRead = require('./../Service/utilityService').fileRead;
 //const utilityService = require('./../Service/utilityService');
 var request = require('supertest');
 var baseUrl = "http://localhost:8000/";
-var filePath = '/home/zeal/my_experiments/REST_API_User/.data/user.json';
+var filePath = '/home/zeal/my_experiments/REST_API_User/.data/dev/user.json';
 const jsonparse = require('./../Service/utilityService').jsonParsing;
 const payLoadCreator = require('./../Service/utilityService').payLoadCreate;
 const nullOrUndefind = require('./../Service/utilityService').checkNotNullAndNotUndefined;
@@ -81,7 +81,7 @@ describe('Get All Check', function () {
         let data = await jsonparse(await await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
         // console.log(data["user"]);
         // console.log(res.body.data);
-        //  console.log(JSON.stringify(res.body.data) == JSON.stringify(data["user"]));
+        //  console.log(JSON.stribaseUrlngify(res.body.data) == JSON.stringify(data["user"]));
         if (JSON.stringify(res.body.data) == JSON.stringify(data["user"])) {
           return true;
         }
@@ -118,7 +118,7 @@ describe("Update Operation Check",async  function  () {
        "id": 806, "name": "zeal test", "age": 78
      }
   //request must return 201 in response.
-  it('Expect:Success||Update request of user Must Have Status Code return 201.', (done) => {
+  it('Expect:Success||Update request of user Must Have Status Code return 200.', (done) => {
     updateContainer
       .post('')
       .send({"payload": data })

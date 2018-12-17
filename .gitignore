@@ -1,4 +1,4 @@
-*.1.json
+
 
 /node_modules
 
@@ -8,6 +8,6 @@
 .data/user.json
 .gitignore
 
-.data/user.json
-.data/user6.json
+/.vscode
+
 

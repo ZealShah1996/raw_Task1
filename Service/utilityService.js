@@ -32,29 +32,29 @@ exports.serverStart = async (port, url = undefined, options = {}) => {
         try {
             //this will create new server using http.
             server.createServer(async (req, res) => {
-                console.log("server started....");
+              //  console.log("server started....");
                 try {
                     //server is running successfull.
                     await serverRoutingFunction.serverRouting(req, res);
-                    console.log("server execution is done");
+                   // console.log("server execution is done");
                 }
                 catch (err) {
                     //servre is not running successfull.
-                    console.log("server execution is done");
+                  //  console.log("server execution is done");
                     //writing to response why server is not running successfull
                     res.write(err.toString()); //write a response to the client
                     res.end(); //end the response
                 }
             }).listen(port, url).on("connection", (server) => {
-                console.log("Establishing connection to server");//on connection establishment verification.
+               // console.log("Establishing connection to server");//on connection establishment verification.
             }).on("close", () => {
-                console.log("Server is stoping...");//it will notifie that server is stopeed by some one.
+              //  console.log("Server is stoping...");//it will notifie that server is stopeed by some one.
             }).on("listening", () => {
-                console.log("Server is listening...");//server is listening.
-                console.log(`Server Started on http:\\${url}:${port}`);//notifiy server is started on this url and port.
+              //  console.log("Server is listening...");//server is listening.
+              //  console.log(`Server Started on http:\\${url}:${port}`);//notifiy server is started on this url and port.
                 return resoleve(true);
             }).on("start", () => {
-                console.log("Server is started...");
+              // console.log("Server is started...");
 
             });
         }
@@ -257,7 +257,7 @@ exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAp
         //assigning request output values like operation performed properly or not and count of data which is added in file.
         returnObject = { "Update Performed": true, "oldData": oldValue, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
         alreadyAddedData[modelName]=datatoreturn;
-        console.log(datatoreturn);
+       // console.log(datatoreturn);
     }
     else {
         if(!utilityService.checkNotUndefined(alreadyAddedData[modelName])){
@@ -278,7 +278,7 @@ exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAp
     //after processing update/create request it will write changes to file.
     let appendData = await utilityService.writeFile(filePath, JSON.stringify(alreadyAddedData), fileAppendOptions);
     //confirmation to condole.
-    console.log("DataUpdate is success full:" + true);
+  //  console.log("DataUpdate is success full:" + true);
     //returning objects to call.
     return returnObject;
 }
@@ -303,7 +303,7 @@ exports.writeFile = async (filePath, data, writeFileOptions) => {
                     throw err;
                 }
                 else {
-                    console.log('Saved!');
+                   // console.log('Saved!');
                     return resolve(data);
                 }
             });
@@ -322,6 +322,7 @@ exports.writeFile = async (filePath, data, writeFileOptions) => {
  * @return {*} file path from base dir.
  */
 exports.createFilePath = async (dir, filename, filetype) => {
+    dir=process.env.NODE_ENV!="production"?"dev/":"prod/";
     let deaultFolderPath = `${baseDir}${dir}${filename}.${filetype}`;
 return new Promise((resolve,reject)=>{
     checkForFile(deaultFolderPath,()=>{
