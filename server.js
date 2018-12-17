@@ -53,7 +53,7 @@ exports.serverRouting = async (req, res) => {
             //set content type to request
             res.setHeader('Content-Type', 'application/json');
             
-            console.log(req);
+           // console.log(req);
             //finding handler function where it will go next.
             var chosenHandler = typeof (req["url"]) !== 'undefined' ? handlers[req["url"]] : handlers.notFound;
             //if any handler is avaiable then it will continue process.
