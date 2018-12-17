@@ -8,7 +8,6 @@
 .data/user.json
 .gitignore
 
-/test
 .data/user.json
 .data/user6.json
 
