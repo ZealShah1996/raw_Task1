@@ -474,7 +474,7 @@ exports.deleteFromArray=async (arrayOfObjects,ids)=>{
 
 //#endregion
 
-//#region region for replaying data
+//#region  for replaying data
 
 exports.responseSendBack = async (object) => {
     let responseObjectString = {};
@@ -492,5 +492,13 @@ exports.responseSendBack = async (object) => {
 exports.checkKeyEsixtsInObject = (object, key) => {
     let boolKeyExists = utilityService.checkNotNullAndNotUndefined(object[key]);
     return boolKeyExists;
+}
+//#endregion
+
+//#region Unit test utility function
+exports.payLoadCreate= (payloadObject)=>{
+payloadObject={"id":9,"name":"zeal shah","age":79};
+console.log(payloadObject);
+return payloadObject;
 }
 //#endregion
