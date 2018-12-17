@@ -14,23 +14,22 @@ const utilityService = require('./../Service/utilityService');
 //const console.log=require('../Service/debugService').console;
 //#endregion
 
-
-
 //#region check Create Method 
-describe("\r\n Create Operation Check", function () {
+describe("\r\n Expect:Success||Create Operation Check", function () {
   createContainer = request(baseUrl + 'user/add');
   let data = {
     "id": 806, "name": "zeal shah", "age": 79
   }
   //request must return 201 in response.
-  it('Create request of user Must Have Status Code return 201.', (done) => {
+  it('Expect:Success||Create request of user Must Have Status Code return 201.', (done) => {
     createContainer
       .post('')
       .send({ "payload": data })
       .expect(201, done);
   });
+
 //it will check that it should send error when user try to add with same id.(primary key should not be same.)
-  it('Create request of user Must Have Status Code return 422 because of same user creation is not allowed.', (done) => {
+  it('Expect:Failed||Create request of user Must Have Status Code return 422 because of same user creation is not allowed.', (done) => {
     createContainer
       .post('')
       .send({ "payload": data })
@@ -41,7 +40,7 @@ describe("\r\n Create Operation Check", function () {
   });
 
   //it will check after delete file's all entry it should add new entry when we request for it.(first entry check)
-  it('Create request when file is deleted.', async () => {
+  it('Expect:Success||Create request when file is deleted.', async () => {
     let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
     let listOfUser = [];
     readData['user'].forEach(element => {
@@ -54,35 +53,18 @@ describe("\r\n Create Operation Check", function () {
       .expect(201);
   });
 
-  
-
 }).beforeAll(() => {
   attachingSpecialCharacterWithMiddle(`Start Create Operation Check`, '=', 100);
 }).afterAll(() => {
   attachingSpecialCharacterWithMiddle(`End Create Operation Check`, '=', 100);
 });
-
-
-function attachingSpecialCharacterWithMiddle(string, specialCharcter, length, color = '\x1b[0m') {
-  let lengthOfString = string.length;
-  let remeaningCharters = (length - lengthOfString) / 2;
-
-  if (length - lengthOfString > 0) {
-    // console.log(length - lengthOfString);
-    console.log(
-      nullOrUndefind(color) ? color : '\x1b[0m',
-      `${specialCharcter.repeat(remeaningCharters - 1)}${string}${specialCharcter.repeat(remeaningCharters - 1)}`
-      , '\x1b[0m');
-    // console.log(`${specialCharcter.repeat(remeaningCharters-1)}${string}${specialCharcter.repeat(remeaningCharters-1)}`);
-  }
-}
 //#endregion
 
 //#region check all get all user url.
 describe('Get All Check', function () {
   getAllcontainer = request(baseUrl + 'user/getAll');
   //request must return 200 in response.
-  it('Must Have Status Code return 200.', function (done) {
+  it('Expect:Success||Must Have Status Code return 200.', function (done) {
     getAllcontainer
       .get('')
       .expect(function (res) {
@@ -92,7 +74,7 @@ describe('Get All Check', function () {
   });
 
   //data get from url need to match with response data.
-  it('data needed to match with db', function (done) {
+  it('Expect:Success||data needed to match with db', function (done) {
     getAllcontainer
       .get('')
       .expect(async function (res) {
@@ -111,7 +93,7 @@ describe('Get All Check', function () {
   });
 
   //data needs to present in response
-  it('data needed to be present', function (done) {
+  it('Expect:Success||data needed to be present', function (done) {
     getAllcontainer
       .get('')
       .expect(/data/)
@@ -124,4 +106,72 @@ describe('Get All Check', function () {
 });
 //#endregion
 
+//#region check all update methods 
+describe("Update Operation Check",async  function  () {
+  updateContainer = request(baseUrl + 'user/update');
+  // let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
+  // let data = readData["user"][0];
+  // data["name"]="test 123";
+  // data["age"]="234";
+  //data["id"]=12;
+  let data = {
+       "id": 806, "name": "zeal test", "age": 78
+     }
+  //request must return 201 in response.
+  it('Expect:Success||Update request of user Must Have Status Code return 201.', (done) => {
+    updateContainer
+      .post('')
+      .send({"payload": data })
+      .expect(200, done);
+  });
 
+//it will check that it should send error when user try to add with same id.(primary key should not be same.)
+  it('Expect:Failed||Update request of user Must Have Status Code return 422 because if user is not present then it\'s error.', (done) => {
+    let data = {
+      "id": 899, "name": "zeal test", "age": 78
+    }
+    updateContainer
+      .post('')
+      .send({ "payload": data })
+      .expect((res) => {
+        attachingSpecialCharacterWithMiddle(JSON.parse(res.text).error, '!', 100, '\x1b[31m');
+      })
+      .expect(422, done);
+  });
+
+  //it will check after delete file's all entry it should add new entry when we request for it.(first entry check)
+  it('Expect:Success||Update request when file is deleted.', async () => {
+    let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
+    let listOfUser = [];
+    readData['user'].forEach(element => {
+      listOfUser.push(element.id);
+    });
+    await utilityService.deleteData(filePath, listOfUser, 'user');
+    await updateContainer
+      .post('')
+      .send({ "payload": data })
+      .expect(422);
+  });
+
+}).beforeAll(() => {
+  attachingSpecialCharacterWithMiddle(`Start update Operation Check`, '=', 100);
+}).afterAll(() => {
+  attachingSpecialCharacterWithMiddle(`End update Operation Check`, '=', 100);
+});
+//#endregion 
+
+//#region support functions for adding functionality.
+function attachingSpecialCharacterWithMiddle(string, specialCharcter, length, color = '\x1b[0m') {
+  let lengthOfString = string.length;
+  let remeaningCharters = (length - lengthOfString) / 2;
+
+  if (length - lengthOfString > 0) {
+    // console.log(length - lengthOfString);
+    console.log(
+      nullOrUndefind(color) ? color : '\x1b[0m',
+      `${specialCharcter.repeat(remeaningCharters - 1)}${string}${specialCharcter.repeat(remeaningCharters - 1)}`
+      , '\x1b[0m');
+    // console.log(`${specialCharcter.repeat(remeaningCharters-1)}${string}${specialCharcter.repeat(remeaningCharters-1)}`);
+  }
+}
+//#endregion
