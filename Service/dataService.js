@@ -119,7 +119,7 @@ exports.delete = async (req,res) => {
         }
     }
     catch (err) {
-        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`,"statuscode":404};
+        return {"error":`Data Add in db is not processed. message:-${err.message} StackTrace:-${err.stack}`,"statuscode":422};
        // throw new Error(`Data Add in db is not processed.\n message:-${err.message}\n StackTrace:-${err.stack}`);
     }
 }

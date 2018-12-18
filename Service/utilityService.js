@@ -32,29 +32,29 @@ exports.serverStart = async (port, url = undefined, options = {}) => {
         try {
             //this will create new server using http.
             server.createServer(async (req, res) => {
-              //  console.log("server started....");
+                //  console.log("server started....");
                 try {
                     //server is running successfull.
                     await serverRoutingFunction.serverRouting(req, res);
-                   // console.log("server execution is done");
+                    // console.log("server execution is done");
                 }
                 catch (err) {
                     //servre is not running successfull.
-                  //  console.log("server execution is done");
+                    //  console.log("server execution is done");
                     //writing to response why server is not running successfull
                     res.write(err.toString()); //write a response to the client
                     res.end(); //end the response
                 }
             }).listen(port, url).on("connection", (server) => {
-               // console.log("Establishing connection to server");//on connection establishment verification.
+                // console.log("Establishing connection to server");//on connection establishment verification.
             }).on("close", () => {
-              //  console.log("Server is stoping...");//it will notifie that server is stopeed by some one.
+                //  console.log("Server is stoping...");//it will notifie that server is stopeed by some one.
             }).on("listening", () => {
-              //  console.log("Server is listening...");//server is listening.
-              //  console.log(`Server Started on http:\\${url}:${port}`);//notifiy server is started on this url and port.
+                //  console.log("Server is listening...");//server is listening.
+                //  console.log(`Server Started on http:\\${url}:${port}`);//notifiy server is started on this url and port.
                 return resoleve(true);
             }).on("start", () => {
-              // console.log("Server is started...");
+                // console.log("Server is started...");
 
             });
         }
@@ -70,10 +70,10 @@ exports.serverStart = async (port, url = undefined, options = {}) => {
 
 //#region check value is undefined or null or null string.
 //**
- /* check that value shouldn't be undefined or null.
- * @param {*} val (ex.5,undefined,null)
- * @return {*} boolean (ex. true,false,false)
- */
+/* check that value shouldn't be undefined or null.
+* @param {*} val (ex.5,undefined,null)
+* @return {*} boolean (ex. true,false,false)
+*/
 
 exports.checkNotNullAndNotUndefined = val => {
     //there is function below which will check that value is null or not.
@@ -89,11 +89,11 @@ exports.checkNotNullAndNotUndefined = val => {
     return false;
 };
 
- /* 
- * check value shouldn't be null
- * @param {*} val (ex.5,null)
- * @return {*} boolean (ex. true,false)
- */
+/* 
+* check value shouldn't be null
+* @param {*} val (ex.5,null)
+* @return {*} boolean (ex. true,false)
+*/
 exports.checkNotNull = val => {
     if (["null"].indexOf(typeof val) == -1) {
         return true;
@@ -101,11 +101,11 @@ exports.checkNotNull = val => {
     return false;
 };
 
- /* 
- * check value shouldn't be undefined.
- * @param {*} val (ex.5,undefined)
- * @return {*} boolean (ex. true,false)
- */
+/* 
+* check value shouldn't be undefined.
+* @param {*} val (ex.5,undefined)
+* @return {*} boolean (ex. true,false)
+*/
 exports.checkNotUndefined = val => {
     if (["undefined"].indexOf(typeof val) == -1) {
         return true;
@@ -113,11 +113,11 @@ exports.checkNotUndefined = val => {
     return false;
 };
 
- /* 
- * check value shouldn't be empty string or sholdn't be empty object.
- * @param {*} val (ex.5,undefined)
- * @return {*} boolean (ex. true,false)
- */
+/* 
+* check value shouldn't be empty string or sholdn't be empty object.
+* @param {*} val (ex.5,undefined)
+* @return {*} boolean (ex. true,false)
+*/
 exports.checkNotEmptyStringAndNotEmptyObject = val => {
     //it will check that value shouldn't be empty string.
     let boolForNotEmptyString = utilityService.checkNotEmptyString(val);
@@ -130,11 +130,11 @@ exports.checkNotEmptyStringAndNotEmptyObject = val => {
     //it will send false default.
     return false;
 };
- /* 
- * check value shouldn't be empty string 
- * @param {*} val (ex.5,"")
- * @return {*} boolean (ex. true,false)
- */
+/* 
+* check value shouldn't be empty string 
+* @param {*} val (ex.5,"")
+* @return {*} boolean (ex. true,false)
+*/
 exports.checkNotEmptyString = val => {
     if (val != "") {
         return true;
@@ -142,11 +142,11 @@ exports.checkNotEmptyString = val => {
     return false;
 };
 
- /* 
- * check value sholdn't be empty object. 
- * @param {*} val (ex.5,{})
- * @return {*} boolean (ex. true,false)
- */
+/* 
+* check value sholdn't be empty object. 
+* @param {*} val (ex.5,{})
+* @return {*} boolean (ex. true,false)
+*/
 exports.checkNotEmptyObject = val => {
     if (val != {}) {
         return true;
@@ -201,11 +201,11 @@ exports.keyFind = async (filePath, fileOptions, keyToCheck, modelName) => {
 }
 
 //**
- /* file read from directory 
- * @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
- * @param {*} fileReadOptions (for future use.)
- *  @return {*} data (ex.data of specific file.)
- */
+/* file read from directory 
+* @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
+* @param {*} fileReadOptions (for future use.)
+*  @return {*} data (ex.data of specific file.)
+*/
 exports.fileRead = async (filePath, fileReadOptions) => {
     //verify that file read options are acceptable.
     fileReadOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileReadOptions) ? fileReadOptions : { encoding: 'utf-8', flag: 'w+' };
@@ -229,71 +229,71 @@ exports.fileRead = async (filePath, fileReadOptions) => {
 }
 
 
- /* file read from directory 
- * @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
- * @param {*} primaryKey (ex. id)-Name of field which will be primary key.
- * @param {*} alreadyAddedData(ex. listofaddeddata)-already fetched data for key check so passed from it.
- * @param {*} data (ex. data needed to add/update)-data which needed to add or update.
- * @param {*} fileAppendOptions (for future use.)
- * @return {*} returnObject.
- */
+/* file read from directory 
+* @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
+* @param {*} primaryKey (ex. id)-Name of field which will be primary key.
+* @param {*} alreadyAddedData(ex. listofaddeddata)-already fetched data for key check so passed from it.
+* @param {*} data (ex. data needed to add/update)-data which needed to add or update.
+* @param {*} fileAppendOptions (for future use.)
+* @return {*} returnObject.
+*/
 exports.appendData = async (filePath, primaryKey, alreadyAddedData, data, fileAppendOptions, modelName) => {
-    try{
-    //verify taht file added options are acceptable.
-    fileAppendOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileAppendOptions) ? fileAppendOptions : { encoding: 'utf-8', flag: 'r+' };
-  
-  //if file append options.update is true that means it is update request other wise it is add request.
-    if (fileAppendOptions.Update) {
-        let oldValue;
-        //performing update.
-        let datatoreturn=alreadyAddedData[modelName].map((value, index) => {
-            if (value.id == data.id) {
-                oldValue=value;
-                value=data;
-                return value;
-            }
-            return value;
-        });
-        //assigning request output values like operation performed properly or not and count of data which is added in file.
-        returnObject = { "Update Performed": true, "oldData": oldValue, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
-        alreadyAddedData[modelName]=datatoreturn;
-       // console.log(datatoreturn);
-    }
-    else {
-        if(!utilityService.checkNotUndefined(alreadyAddedData[modelName])){
-              //data add
-            alreadyAddedData[modelName]=[];
-            alreadyAddedData[modelName].push(data);
-          
-        }
-        else{
-        //performing create request.
-        alreadyAddedData[modelName][alreadyAddedData[modelName].length] =
-            data;
-        }
-        
-            returnObject = { "Create Performed": true, "addeddata": data, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
-    }
+    try {
+        //verify taht file added options are acceptable.
+        fileAppendOptions = utilityService.checkNotNullAndNotUndefinedAndNotEmptyStringAndNotEmptyObject(fileAppendOptions) ? fileAppendOptions : { encoding: 'utf-8', flag: 'r+' };
 
-    //after processing update/create request it will write changes to file.
-    let appendData = await utilityService.writeFile(filePath, JSON.stringify(alreadyAddedData), fileAppendOptions);
-    //confirmation to condole.
-  //  console.log("DataUpdate is success full:" + true);
-    //returning objects to call.
-    return returnObject;
-}
-catch(err){
-    return [];
-}
+        //if file append options.update is true that means it is update request other wise it is add request.
+        if (fileAppendOptions.Update) {
+            let oldValue;
+            //performing update.
+            let datatoreturn = alreadyAddedData[modelName].map((value, index) => {
+                if (value.id == data.id) {
+                    oldValue = value;
+                    value = data;
+                    return value;
+                }
+                return value;
+            });
+            //assigning request output values like operation performed properly or not and count of data which is added in file.
+            returnObject = { "Update Performed": true, "oldData": oldValue, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
+            alreadyAddedData[modelName] = datatoreturn;
+            // console.log(datatoreturn);
+        }
+        else {
+            if (!utilityService.checkNotUndefined(alreadyAddedData[modelName])) {
+                //data add
+                alreadyAddedData[modelName] = [];
+                alreadyAddedData[modelName].push(data);
+
+            }
+            else {
+                //performing create request.
+                alreadyAddedData[modelName][alreadyAddedData[modelName].length] =
+                    data;
+            }
+
+            returnObject = { "Create Performed": true, "addeddata": data, "finalCoutOfRecords": alreadyAddedData[modelName].length != undefined ? alreadyAddedData[modelName].length : 0 };
+        }
+
+        //after processing update/create request it will write changes to file.
+        let appendData = await utilityService.writeFile(filePath, JSON.stringify(alreadyAddedData), fileAppendOptions);
+        //confirmation to condole.
+        //  console.log("DataUpdate is success full:" + true);
+        //returning objects to call.
+        return returnObject;
+    }
+    catch (err) {
+        return [];
+    }
 }
 
 //**
- /* file write. 
- * @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
- * @param {*} data (ex.data which needed to write)
- * @param {*} writeFileOptions (for future use.)
- *  @return {*} data (ex.writetten data.)
- */
+/* file write. 
+* @param {*} filePath (ex.filepath:-/home/zeal/my_experiments/REST_API_User/Service.)
+* @param {*} data (ex.data which needed to write)
+* @param {*} writeFileOptions (for future use.)
+*  @return {*} data (ex.writetten data.)
+*/
 exports.writeFile = async (filePath, data, writeFileOptions) => {
     return new Promise((resolve, reject) => {
         try {
@@ -303,7 +303,7 @@ exports.writeFile = async (filePath, data, writeFileOptions) => {
                     throw err;
                 }
                 else {
-                   // console.log('Saved!');
+                    // console.log('Saved!');
                     return resolve(data);
                 }
             });
@@ -315,37 +315,33 @@ exports.writeFile = async (filePath, data, writeFileOptions) => {
 }
 
 //**
- /* create file path from given perameters
- * @param {*} dir (ex. zeal)
- * @param {*} filename (ex. user)
- * @param {*} filetype (ex. json)
- * @return {*} file path from base dir.
- */
+/* create file path from given perameters
+* @param {*} dir (ex. zeal)
+* @param {*} filename (ex. user)
+* @param {*} filetype (ex. json)
+* @return {*} file path from base dir.
+*/
 exports.createFilePath = async (dir, filename, filetype) => {
-    dir=process.env.NODE_ENV!="production"?"dev/":"prod/";
-    let deaultFolderPath = `${baseDir}${dir}${filename}.${filetype}`;
-return new Promise((resolve,reject)=>{
-    checkForFile(deaultFolderPath,()=>{
-        return resolve(deaultFolderPath);
-       });
-})
-  
-    
+    dir = await utilityService.findConfigurationFromConfigFile("folderName");
+    let deaultFolderPath = `${baseDir}${dir}/${filename}.${filetype}`;
+    return new Promise((resolve, reject) => {
+        checkForFile(deaultFolderPath, () => {
+            return resolve(deaultFolderPath);
+        });
+    })
+
+
 }
 
 //checks if the file exists. 
 //If it does, it just calls back.
 //If it doesn't, then the file is created.
-function checkForFile(fileName,callback)
-{
+function checkForFile(fileName, callback) {
     fs.exists(fileName, function (exists) {
-        if(exists)
-        {
+        if (exists) {
             callback();
-        }else
-        {
-            fs.writeFile(fileName, "",{flag: 'wx'}, function (err, data) 
-            { 
+        } else {
+            fs.writeFile(fileName, "", { flag: 'wx' }, function (err, data) {
                 callback();
             })
         }
@@ -354,32 +350,32 @@ function checkForFile(fileName,callback)
 
 
 //**
- /* prevent error of not acceptable json.
- * @param {*} string (ex. string to be parsed)
- * @param {*} defaultValuePassed (ex. if json is not acceptable then what should return.)
- * @return {*} existData. -Parsed data.
- */
+/* prevent error of not acceptable json.
+* @param {*} string (ex. string to be parsed)
+* @param {*} defaultValuePassed (ex. if json is not acceptable then what should return.)
+* @return {*} existData. -Parsed data.
+*/
 exports.jsonParsing = async (string, defaultValuePassed = {}) => {
     let existData = string;
-    try{
-    if (typeof (string) == "string") {
-        existData = utilityService.checkNotEmptyStringAndNotEmptyObject(string) ? JSON.parse(string) : defaultValuePassed;
+    try {
+        if (typeof (string) == "string") {
+            existData = utilityService.checkNotEmptyStringAndNotEmptyObject(string) ? JSON.parse(string) : defaultValuePassed;
+        }
+        return existData;
     }
-    return existData;
-}
-catch(err){
-    return {};
-}
+    catch (err) {
+        return {};
+    }
 }
 
- //**
-  /* find all data in main file.
-  * @param {*} filePath (ex. string to be parsed)
-  * @param {*} condition (for future use.)
-  * @param {*} modelName (model name means table name.)
-  * @return {*} retrunObject. -return object which contains data to show from files.
-  */
-exports.findAllData = async (filePath, modelName,condition={}) => {
+//**
+/* find all data in main file.
+* @param {*} filePath (ex. string to be parsed)
+* @param {*} condition (for future use.)
+* @param {*} modelName (model name means table name.)
+* @return {*} retrunObject. -return object which contains data to show from files.
+*/
+exports.findAllData = async (filePath, modelName, condition = {}) => {
     let retrunObject = {};
     //reading file
     let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r+' });
@@ -387,88 +383,102 @@ exports.findAllData = async (filePath, modelName,condition={}) => {
     //checking condition should not be emty object.
     if (condition != {}) {
         //parsing data which passed.
-         let temp=await utilityService.jsonParsing(data,[]);
-         //assigning data in replay object.
-         retrunObject["data"] =utilityService.checkNotNullAndNotUndefined(temp[modelName])?temp[modelName]:'';
-         //attaching condition.
-         retrunObject["data"]["condition"] = condition;
-         
+        let temp = await utilityService.jsonParsing(data, []);
+        //assigning data in replay object.
+        retrunObject["data"] = utilityService.checkNotNullAndNotUndefined(temp[modelName]) ? temp[modelName] : '';
+        //attaching condition.
+        retrunObject["data"]["condition"] = condition;
+
         return retrunObject;
     }
     //executing get all entries from file.
     else {
-         //parsing data which passed.
-        let temp=await utilityService.jsonParsing(data);
+        //parsing data which passed.
+        let temp = await utilityService.jsonParsing(data);
         //assigning data in replay object.
-        retrunObject["data"] =temp[modelName];
+        retrunObject["data"] = temp[modelName];
         return retrunObject;
     }
 }
 
 //**
-  /* @description ids passed needs to delete.
-  * @function deleteData(filePath,condition,modelName)
-  * @param {String} filePath (ex. string to be parsed)
-  * @param {Array} ids ()
-  * @param {String} modelName (model name means table name.)
-  * @return {Array} retrunObject. -return object which contains data to show from files.
-  */
- exports.deleteData = async (filePath,ids,modelName) => {
+/* @description ids passed needs to delete.
+* @function deleteData(filePath,condition,modelName)
+* @param {String} filePath (ex. string to be parsed)
+* @param {Array} ids ()
+* @param {String} modelName (model name means table name.)
+* @return {Array} retrunObject. -return object which contains data to show from files.
+*/
+exports.deleteData = async (filePath, ids, modelName) => {
     let retrunObject = {};
     //reading file
     let data = await utilityService.fileRead(filePath, { encoding: 'utf-8', flag: 'r+' });
 
     //checking condition should not be emty object.
-    if (ids.length!=0) {
+    if (ids.length != 0) {
         //parsing data which passed.
-         let temp=await utilityService.jsonParsing(data);
-         temp[modelName]=await utilityService.deleteFromArray(temp[modelName],ids);
-         //assigning data in replay object.
-         retrunObject["data"] =temp[modelName];
-         
-        //after processing update/create request it will write changes to file.
-        let appendData = await utilityService.writeFile(filePath, JSON.stringify(temp), {});
-        return retrunObject;
+        let temp = await utilityService.jsonParsing(data);
+        let deletedData = await utilityService.deleteFromArray(temp[modelName], ids);
+        if (deletedData.exists) {
+            temp[modelName] = deletedData.data;
+            //assigning data in replay object.
+            retrunObject["data"] = deletedData["deletedData"];
+            //after processing update/create request it will write changes to file.
+            let appendData = await utilityService.writeFile(filePath, JSON.stringify(temp), {});
+            return retrunObject;
+        }
+        else {
+            throw new Error("User is not present.")
+        }
+
     }
     //executing get all entries from file.
     else {
-         //parsing data which passed.
-        let temp=await utilityService.jsonParsing(data);
+        //parsing data which passed.
+        let temp = await utilityService.jsonParsing(data);
         //assigning data in replay object.
-        retrunObject["data"] =temp[modelName];
-        retrunObject["message"]="Nothing deleted."
+        retrunObject["data"] = temp[modelName];
+        retrunObject["message"] = "Nothing deleted."
         return retrunObject;
     }
-       
+
 }
 
 
 
 exports.filterArray = async (arrayOfObjects, ids) => {
-try{
-    let returnListOfObjects = arrayOfObjects.filter((element) => {
-        if (ids.indexOf(element.id) > -1) {
-            return element;
-        }
-    });
-    return returnListOfObjects;
-}
-catch(err){
-    return arrayOfObjects;
-}
-}
-
-
-exports.deleteFromArray=async (arrayOfObjects,ids)=>{
-    if(arrayOfObjects.length<1){
-        return [];
+    try {
+        let returnListOfObjects = arrayOfObjects.filter((element) => {
+            if (ids.indexOf(element.id) > -1) {
+                return element;
+            }
+        });
+        return returnListOfObjects;
     }
+    catch (err) {
+        return arrayOfObjects;
+    }
+}
+
+
+exports.deleteFromArray = async (arrayOfObjects, ids) => {
+    if (arrayOfObjects.length < 1) {
+        return { "deletedData": [], "data": [], "exists": false };
+    }
+    let deletedData = [];
+    let exists = false;
     let returnListOfObjects = arrayOfObjects.filter((element) => {
-        if (ids.indexOf(element.id)==-1) {
+        if (ids.indexOf(element.id) == -1) {
             return element;
         }
+        else {
+            exists = true;
+            deletedData.push(element);
+        }
     });
-    return returnListOfObjects;
+    deletedData = utilityService.checkNotNullAndNotUndefined(deletedData) ? deletedData : [];
+    returnListOfObjects = utilityService.checkNotNullAndNotUndefined(returnListOfObjects) ? returnListOfObjects : [];
+    return { "deletedData": deletedData, "data": returnListOfObjects, "exists": exists };
 }
 
 
@@ -479,7 +489,7 @@ exports.deleteFromArray=async (arrayOfObjects,ids)=>{
 
 exports.responseSendBack = async (object) => {
     let responseObjectString = {};
-    let listOfObjects = ["data", "error","message"];
+    let listOfObjects = ["data", "error", "message"];
     listOfObjects.forEach((element) => {
         let bool = utilityService.checkKeyEsixtsInObject(object, element);
         if (bool) {
@@ -497,9 +507,38 @@ exports.checkKeyEsixtsInObject = (object, key) => {
 //#endregion
 
 //#region Unit test utility function
-exports.payLoadCreate= (payloadObject)=>{
-payloadObject={"id":9,"name":"zeal shah","age":79};
-console.log(payloadObject);
-return payloadObject;
+exports.payLoadCreate = (payloadObject) => {
+    payloadObject = { "id": 9, "name": "zeal shah", "age": 79 };
+    console.log(payloadObject);
+    return payloadObject;
+}
+//#endregion
+
+
+//#region Configuration find functions
+exports.findConfigurationFromConfigFile = async val => {
+    try {
+        //uncached already cached json file.
+        utilityService.requireUncachedJson('./../config/env.json');
+        var config = require("./../config/env.json")[
+            process.env.NODE_ENV || "development"
+        ];
+    } catch (error) {
+        // utilityService.handleError("Error" + error);
+    }
+    return config[val];
+};
+
+
+exports.requireUncachedJson = (path) => {
+    try {
+        let value = require.resolve(path);
+        delete require.cache[value];
+        return true;
+    }
+    catch (error) {
+        return true;
+    }
+
 }
 //#endregion

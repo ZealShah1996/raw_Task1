@@ -109,11 +109,7 @@ describe('Get All Check', function () {
 //#region check all update methods 
 describe("Update Operation Check",async  function  () {
   updateContainer = request(baseUrl + 'user/update');
-  // let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
-  // let data = readData["user"][0];
-  // data["name"]="test 123";
-  // data["age"]="234";
-  //data["id"]=12;
+
   let data = {
        "id": 806, "name": "zeal test", "age": 78
      }
@@ -157,6 +153,49 @@ describe("Update Operation Check",async  function  () {
   attachingSpecialCharacterWithMiddle(`Start update Operation Check`, '=', 100);
 }).afterAll(() => {
   attachingSpecialCharacterWithMiddle(`End update Operation Check`, '=', 100);
+});
+//#endregion 
+
+
+
+
+//#region check all delete methods 
+describe("delete Operation Check",async  function  () {
+  let id=809;
+  deleteContainer = request(baseUrl + `user/delete`);
+  createContainer = request(baseUrl + 'user/add');
+  let data = {
+    "id": 809, "name": "zeal shah", "age": 79
+  }
+  //request must return 201 in response.
+  it('Expect:Success||before delete Create request of user Must Have Status Code return 201.', (done) => {
+    createContainer
+      .post('')
+      .send({ "payload": data })
+      .expect(201, done);
+  });
+
+  //request must return 201 in response.
+  it('Expect:Success||delete request of user Must Have Status Code return 200.', (done) => {
+    deleteContainer
+      .get(`/${id}`)
+      .expect(200, done);
+  });
+
+//it will check that it should send error when user try to add with same id.(primary key should not be same.)
+  it('Expect:Failed||delete request of user Must Have Status Code return 422 because if user is not present then it\'s error.', (done) => {
+    let idNotPresentInDatabase=899;
+    deleteContainer
+    .get(`/${idNotPresentInDatabase}`)
+      .expect((res) => {
+       // attachingSpecialCharacterWithMiddle(JSON.parse(res.text).error, '!', 100, '\x1b[31m');
+      })
+      .expect(422, done);
+  });
+}).beforeAll(() => {
+  attachingSpecialCharacterWithMiddle(`Start delete Operation Check`, '=', 100);
+}).afterAll(() => {
+  attachingSpecialCharacterWithMiddle(`End delete Operation Check`, '=', 100);
 });
 //#endregion 
 
