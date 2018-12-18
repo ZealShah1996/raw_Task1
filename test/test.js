@@ -175,7 +175,7 @@ describe("delete Operation Check",async  function  () {
       .expect(201, done);
   });
 
-  //request must return 201 in response.
+  //request must return 200 in response.
   it('Expect:Success||delete request of user Must Have Status Code return 200.', (done) => {
     deleteContainer
       .get(`/${id}`)
