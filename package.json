@@ -9,7 +9,7 @@
     "test": "./node_modules/.bin/mocha",
     "start": "node server.js",
     "check_in": "git add . && git commit -m \"check in test\" && git push origin master",
-    "Git_check":"sudo bash ./script/git_check_in.sh"
+    "Git_check_in":"sudo bash ./script/git_check_in.sh"
   },
   "repository": {
     "type": "git",

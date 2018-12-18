@@ -6,7 +6,7 @@ var fileRead = require('./../Service/utilityService').fileRead;
 //const utilityService = require('./../Service/utilityService');
 var request = require('supertest');
 var baseUrl = "http://localhost:8000/";
-var filePath = '/home/zeal/my_experiments/REST_API_User/.data/dev/user.json';
+var filePath;
 const jsonparse = require('./../Service/utilityService').jsonParsing;
 const payLoadCreator = require('./../Service/utilityService').payLoadCreate;
 const nullOrUndefind = require('./../Service/utilityService').checkNotNullAndNotUndefined;
@@ -41,11 +41,13 @@ describe("\r\n Expect:Success||Create Operation Check", function () {
 
   //it will check after delete file's all entry it should add new entry when we request for it.(first entry check)
   it('Expect:Success||Create request when file is deleted.', async () => {
+    filePath=await utilityService.createFilePath('','user', 'json');
     let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
     let listOfUser = [];
     readData['user'].forEach(element => {
       listOfUser.push(element.id);
     });
+    
     await utilityService.deleteData(filePath, listOfUser, 'user');
     await createContainer
       .post('')
@@ -78,6 +80,7 @@ describe('Get All Check', function () {
     getAllcontainer
       .get('')
       .expect(async function (res) {
+        filePath=await utilityService.createFilePath('','user', 'json');
         let data = await jsonparse(await await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
         // console.log(data["user"]);
         // console.log(res.body.data);
@@ -137,6 +140,7 @@ describe("Update Operation Check",async  function  () {
 
   //it will check after delete file's all entry it should add new entry when we request for it.(first entry check)
   it('Expect:Success||Update request when file is deleted.', async () => {
+    filePath=await utilityService.createFilePath('','user', 'json');
     let readData = await jsonparse(await fileRead(filePath, { encoding: 'utf-8', flag: 'r+' }));
     let listOfUser = [];
     readData['user'].forEach(element => {

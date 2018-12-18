@@ -1,0 +1,15 @@
+
+
+/node_modules
+
+/test/node_modules
+
+*.log
+.data/user.json
+
+
+/.vscode
+
+.data/prod/user.json
+
+/Service/mailService.js
